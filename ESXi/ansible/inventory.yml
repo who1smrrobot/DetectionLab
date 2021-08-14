@@ -17,8 +17,24 @@ wef:
   hosts:
     y.y.y.y:
 
+database:
+  hosts:
+    a.a.a.a:  
+
+web:
+  hosts:
+    w.w.w.w:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'    
+
 win10:
   hosts:
     z.z.z.z:
+    w.w.w.w:
 
-
+secret:
+  hosts:
+    z.z.z.z:

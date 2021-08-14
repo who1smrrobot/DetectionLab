@@ -16,6 +16,16 @@
     - common
   tags: wef
 
+- hosts: database
+  roles:
+    - common
+  tags: database
+
+#- hosts: web
+#  roles:
+#    - logger
+#  tags: web  
+
 - hosts: exchange
   roles:
     - exchange
@@ -28,4 +38,7 @@
     - common
   tags: win10
 
-
+- hosts: secret
+  roles:
+    - common
+  tags: secret
