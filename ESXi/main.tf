@@ -185,7 +185,7 @@ resource "esxi_guest" "web" {
   }
   # This is the local network that will be used for 192.168.38.x addressing
   network_interfaces {
-    virtual_network = var.hostonly_network
+    virtual_network = var.www_network
     mac_address     = "00:50:56:a7:b1:c4"
     nic_type        = "e1000"
   }

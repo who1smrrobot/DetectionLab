@@ -30,3 +30,7 @@ variable "vm_network" {
 variable "hostonly_network" {
   default = "HostOnly Network"
 }
+
+variable "www_network" {
+  default = "VM Network"
+}

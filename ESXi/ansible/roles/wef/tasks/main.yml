@@ -82,23 +82,14 @@
 
 - debug: msg="{{ wef_subscriptions.stdout_lines }}"
 
-- name: Installing the Splunk Universal Forwarder
-  win_shell: ".\\install-splunkuf.ps1"
+- name: Installing the winlogbeat
+  win_shell: ".\\install-winlogbeat.ps1"
   args:
     chdir: 'c:\vagrant\scripts'
-  register: splunkuf
-  failed_when: "'Exception' in splunkuf.stdout"
+  register: winlogbeat
+  failed_when: "'Exception' in winlogbeat.stdout"
 
-- debug: msg="{{ splunkuf.stdout_lines }}"
-
-- name: Install Splunk Windows TA
-  win_shell: ".\\install-windows_ta.ps1"
-  args:
-    chdir: 'c:\vagrant\scripts'
-  register: windowsta
-  failed_when: "'Exception' in windowsta.stdout"
-
-- debug: msg="{{ windowsta.stdout_lines }}"
+- debug: msg="{{ winlogbeat.stdout_lines }}"
 
 - name: Installing the Powershell Log Transcription Share
   win_shell: ".\\configure-pslogstranscriptsshare.ps1"
