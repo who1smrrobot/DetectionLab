@@ -63,3 +63,6 @@ www_network="CTFLab_WWW"
 
 ### Ansible
 
+Enter IP addresses from ESXi to `inventory.yml`.
+
+`ansible-playbook -v detectionlab.yml –tags "[logger|dc|wef|win10]"`
