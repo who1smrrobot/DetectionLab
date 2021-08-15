@@ -273,7 +273,7 @@
       throw "winlogbeat service was not running"
     }
   register: install_elk
-  changed_when: "'The ELK web interface is at https://logger:8000' in instal_elk.stdout"
+  changed_when: "'The ELK web interface is at https://logger:8000' in install_elk.stdout"
 
 - name: Install Fleet
   args: 
