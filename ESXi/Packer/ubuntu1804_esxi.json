@@ -30,6 +30,7 @@
             "boot_wait": "10s",
             "cpus": "{{ user `cpus` }}",
             "disk_size": "{{user `disk_size`}}",
+            "disk_type_id": "thin",
             "guest_os_type": "ubuntu-64",
             "http_directory": "{{user `http_directory`}}",
             "http_bind_address": "{{user `http_server_address`}}",
