@@ -162,116 +162,181 @@
     executable: /bin/bash
   become: yes
   shell: |
-    # Purpose: Configure winlogbeat
+    #!/bin/bash
 
-    $service = Get-WmiObject -Class Win32_Service -Filter "Name='winlogbeat'"
-    If (-not ($service)) {
-      choco install winlogbeat -y
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+    echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+    echo "deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main" | sudo tee -a /etc/apt/sources.list.d/curator-5.list
+    apt-get -qq update
+    apt-get -qq install elasticsearch -y # 1st install elasticseatch to get JDK
+    export JAVA_HOME=/usr/share/elasticsearch/jdk && echo export JAVA_HOME=/usr/share/elasticsearch/jdk >>/etc/bash.bashrc
+    apt-get -qq install kibana filebeat auditbeat elasticsearch-curator -y
 
-      $confFile = @"
-    processors:
-      - script:
-          when.equals.winlog.channel: Security
-          lang: javascript
-          id: security
-          file: `${path.home}/module/security/config/winlogbeat-security.js
+    cat >/etc/cron.daily/curator <<EOF
+    #!/bin/sh
+    curator_cli --host 192.168.38.105 delete_indices --filter_list '{"filtertype": "age", "source": "name", "timestring": "%Y.%m.%d", "unit": "days", "unit_count": 1, "direction": "older"}'  > /dev/null 2>&1
+    EOF
+    chmod +x /etc/cron.daily/curator
 
-    winlogbeat.event_logs:
-      - name: ForwardedEvents
-        ignore_older: 15m
-      
-      - name: WEC-Authentication
-      - name: WEC-Code-Integrity
-      - name: WEC-EMET
-      - name: WEC-Powershell
-      - name: WEC-Process-Execution
-      - name: WEC-Services
-      - name: WEC-WMI
-      - name: WEC16-Test
-      - name: WEC2-Application-Crashes
-      - name: WEC2-Applocker
-      - name: WEC2-Group-Policy-Errors
-      - name: WEC2-Object-Manipulation
-      - name: WEC2-Registry
-      - name: WEC2-Task-Scheduler
-      - name: WEC2-Windows-Defender
-      - name: WEC3-Account-Management
-      - name: WEC3-Drivers
-      - name: WEC3-External-Devices
-      - name: WEC3-Firewall
-      - name: WEC3-Print
-      - name: WEC3-Smart-Card
-      - name: WEC3-Windows-Diagnostics
-      - name: WEC4-Bits-Client
-      - name: WEC4-DNS
-      - name: WEC4-Hotpatching-Errors
-      - name: WEC4-Shares
-      - name: WEC4-System-Time-Change
-      - name: WEC4-Windows-Updates
-      - name: WEC4-Wireless
-      - name: WEC5-Autoruns
-      - name: WEC5-Certificate-Authority
-      - name: WEC5-Crypto-API
-      - name: WEC5-Log-Deletion-Security
-      - name: WEC5-Log-Deletion-System
-      - name: WEC5-MSI-Packages
-      - name: WEC5-Operating-System
-      - name: WEC6-ADFS
-      - name: WEC6-Device-Guard
-      - name: WEC6-Duo-Security
-      - name: WEC6-Exploit-Guard
-      - name: WEC6-Microsoft-Office
-      - name: WEC6-Software-Restriction-Policies
-      - name: WEC6-Sysmon
-        processors:
-        - script:
-            lang: javascript
-            id: sysmon
-            file: `${path.home}/module/sysmon/config/winlogbeat-sysmon.js
-      - name: WEC7-Active-Directory
-      - name: WEC7-Privilege-Use
-      - name: WEC7-Terminal-Services
-      
-      - name: Windows PowerShell
-        event_id: 400, 403, 600, 800
-        processors:
-          - script:
-              lang: javascript
-              id: powershell
-              file: ${path.home}/module/powershell/config/winlogbeat-powershell.js
+    printf vagrant | /usr/share/elasticsearch/bin/elasticsearch-keystore add -x "bootstrap.password" -f
+    /usr/share/elasticsearch/bin/elasticsearch-users useradd vagrant -p vagrant -r superuser
 
-      - name: Microsoft-Windows-PowerShell/Operational
-        event_id: 4103, 4104, 4105, 4106
-        processors:
-          - script:
-              lang: javascript
-              id: powershell-operational
-              file: ${path.home}/module/powershell/config/winlogbeat-powershell.js
+    cat >/etc/elasticsearch/elasticsearch.yml <<EOF
+    network.host: _eth1:ipv4_
+    discovery.type: single-node
+    cluster.name: cydef-es-cluster
+    node.name: \${HOSTNAME}
+    path.data: /var/lib/elasticsearch
+    path.logs: /var/log/elasticsearch
+    xpack.security.enabled: true
+    xpack.security.authc:
+            api_key.enabled: true
+            anonymous:
+                    username: anonymous
+                    roles: superuser
+                    authz_exception: false
+    EOF
 
+    cat >/etc/default/elasticsearch <<EOF
+    ES_PATH_CONF=/etc/elasticsearch
+    ES_STARTUP_SLEEP_TIME=5
+    MAX_OPEN_FILES=65536
+    MAX_LOCKED_MEMORY=unlimited
+    EOF
+
+    mkdir /etc/systemd/system/elasticsearch.service.d/
+    cat >/etc/systemd/system/elasticsearch.service.d/override.conf <<EOF
+    [Service]
+    LimitMEMLOCK=infinity
+    EOF
+
+    cat >/etc/security/limits.conf <<EOF
+    elasticsearch soft nofile 65536
+    elasticsearch hard nofile 65536
+    elasticsearch soft memlock unlimited
+    elasticsearch hard memlock unlimited
+    EOF
+
+    /bin/systemctl daemon-reload
+    /bin/systemctl enable elasticsearch.service
+    /bin/systemctl start elasticsearch.service
+
+    #kibana
+    touch /var/log/kibana.log
+    chown kibana:kibana /var/log/kibana.log
+    cat >/etc/kibana/kibana.yml <<EOF
+    server.host: "192.168.38.105"
+    elasticsearch.hosts: ["http://192.168.38.105:9200"]
+    logging.dest: "/var/log/kibana.log"
+    kibana.defaultAppId: "discover"
+    telemetry.enabled: false
+    telemetry.optIn: false
+    newsfeed.enabled: false
+    xpack.security.enabled: true
+    xpack.ingestManager.fleet.tlsCheckDisabled: true
+    xpack.encryptedSavedObjects.encryptionKey: 'fhjskloppd678ehkdfdlliverpoolfcr'
+    EOF
+
+    /bin/systemctl enable kibana.service
+    /bin/systemctl start kibana.service
+
+    cat >/etc/filebeat/filebeat.yml <<EOF
+    filebeat.inputs:
+    - type: log
+      enabled: false
+      paths:
+        - /var/log/auth.log
+        - /var/log/syslog
+    filebeat.config.modules:
+      path: \${path.config}/modules.d/*.yml
+      reload.enabled: true
+      reload.period: 10s
     setup.kibana:
       host: "192.168.38.105:5601"
       username: vagrant
       password: vagrant
-
     setup.dashboards.enabled: true
     setup.ilm.enabled: false
-
     output.elasticsearch:
       hosts: ["192.168.38.105:9200"]
-    "@
-      $confFile | Out-File -FilePath C:\ProgramData\chocolatey\lib\winlogbeat\tools\winlogbeat.yml -Encoding ascii
+    EOF
 
-      winlogbeat --path.config C:\ProgramData\chocolatey\lib\winlogbeat\tools setup
+    cat >/etc/filebeat/modules.d/osquery.yml.disabled <<EOF
+    - module: osquery
+      result:
+        enabled: true
+        # Set custom paths for the log files. If left empty,
+        # Filebeat will choose the paths depending on your OS.
+        var.paths: ["/var/log/kolide/osquery_result"]
+    EOF
+    filebeat --path.config /etc/filebeat modules enable osquery
 
-      sc.exe failure winlogbeat reset= 30 actions= restart/5000
-      Start-Service winlogbeat
-    }
-    else {
-      Write-Host "winlogbeat is already configured. Moving On."
-    }
-    If ((Get-Service -name winlogbeat).Status -ne "Running") {
-      throw "winlogbeat service was not running"
-    }
+    cat >/etc/auditbeat/auditbeat.yml <<EOF
+    auditbeat.config.modules:
+      path: \${path.config}/modules.d/*.yml
+      reload.period: 10s
+      reload.enabled: true
+    auditbeat.max_start_delay: 10s
+    auditbeat.modules:
+    - module: auditd
+      audit_rule_files: [ '\${path.config}/audit.rules.d/*.conf' ]
+      audit_rules: |
+    - module: file_integrity
+      paths:
+      - /bin
+      - /usr/bin
+      - /sbin
+      - /usr/sbin
+      - /etc
+    - module: system
+      state.period: 12h
+      user.detect_password_changes: true
+      login.wtmp_file_pattern: /var/log/wtmp*
+      login.btmp_file_pattern: /var/log/btmp*
+    setup.template.settings:
+      index.number_of_shards: 1
+    setup.kibana:
+      host: "192.168.38.105:5601"
+      username: vagrant
+      password: vagrant
+    setup.dashboards.enabled: true
+    setup.ilm.enabled: false
+    output.elasticsearch:
+      hosts: ["192.168.38.105:9200"]
+    processors:
+      - add_host_metadata: ~
+      - add_cloud_metadata: ~
+      - add_docker_metadata: ~
+    EOF
+    mv /etc/auditbeat/audit.rules.d/sample-rules.conf.disabled /etc/auditbeat/audit.rules.d/sample-rules.conf
+
+    mkdir /var/log/bro/
+    ln -s /opt/zeek/logs/current/ /var/log/bro/current
+    filebeat --path.config /etc/filebeat modules enable zeek
+
+    filebeat --path.config /etc/filebeat modules enable suricata
+
+    # make sure kibana is up and running
+    echo "Waiting for Kibana to be up..."
+    while true; do
+      result=$(curl -uvagrant:vagrant --silent 192.168.38.105:5601/api/status)
+      if echo $result | grep -q logger; then break; fi
+      sleep 1
+    done
+    /bin/systemctl enable filebeat.service
+    /bin/systemctl start filebeat.service
+
+    /bin/systemctl enable auditbeat.service
+    /bin/systemctl start auditbeat.service
+
+    # load SIEM prebuilt rules
+    echo "Load SIEM prebuilt rules"
+    curl -s -uvagrant:vagrant -XPOST "192.168.38.105:5601/api/detection_engine/index" -H 'kbn-xsrf: true' -H 'Content-Type: application/json'
+    curl -s -uvagrant:vagrant -XPUT "192.168.38.105:5601/api/detection_engine/rules/prepackaged" -H 'kbn-xsrf: true' -H 'Content-Type: application/json'
+
+    # Enable elasticsearch trial
+    # echo "Enable elastic trial version"
+    # curl -s -XPOST "192.168.38.105:9200/_license/start_trial?acknowledge=true&pretty"
   register: install_elk
   changed_when: "'The ELK web interface is at https://logger:8000' in install_elk.stdout"
 
