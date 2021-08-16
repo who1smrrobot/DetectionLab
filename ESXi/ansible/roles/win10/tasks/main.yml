@@ -22,11 +22,17 @@
 
 - name: Check if existing DetectionLab directory
   win_stat:
-    path: 'c:\DetectionLab'
+    path: 'C:\DetectionLab'
   register: dir
 
+- name: "Ansible Create directory if not exists"
+  ansible.windows.win_file:
+    path: C:\DetectionLab
+    state: directory
+  when: dir.stat.exists == false
+
 - name: Copy DetectionLab folder to target machine
-  copy: src=../../../DetectionLab dest=C:\DetectionLab
+  win_copy: src=../../../DetectionLab/ dest=C:\DetectionLab\
 
 #- name: Git clone Detectionlab
 #  win_shell: git clone https://github.com/clong/DetectionLab.git
