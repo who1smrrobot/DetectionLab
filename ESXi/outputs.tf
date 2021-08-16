@@ -23,9 +23,17 @@ output "wef_ips" {
 }
 
 output "win10_interfaces" {
-  value = esxi_guest.win10.network_interfaces
+  value = esxi_guest.win10-1.network_interfaces
 }
 
 output "win10_ips" {
-  value = esxi_guest.win10.ip_address
+  value = esxi_guest.win10-1.ip_address
+}
+
+output "win102_interfaces" {
+  value = esxi_guest.win10-2.network_interfaces
+}
+
+output "win102_ips" {
+  value = esxi_guest.win10-2.ip_address
 }
