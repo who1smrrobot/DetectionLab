@@ -34,7 +34,7 @@
     group: vagrant
 
 - name: Copy the netplan file over as root
-  shell: "mv /tmp/01-netcfg.yaml /etc/netplan/01-netcfg-web.yaml"
+  shell: "mv /tmp/01-netcfg.yaml /etc/netplan/01-netcfg.yaml"
   become: yes
 
 - name: Apply the new netplan

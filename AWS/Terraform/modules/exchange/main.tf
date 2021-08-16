@@ -10,9 +10,9 @@ resource "aws_instance" "exchange" {
     inline = [
       "choco install -force -y winpcap",
       "ipconfig /renew",
-      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.103    wef.windomain.local'\"",
-      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.102    dc.windomain.local'\"",
-      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.102    windomain.local'\"",
+      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.103    wef.ecorp.local'\"",
+      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.102    dc.ecorp.local'\"",
+      "powershell.exe -c \"Add-Content 'c:\\windows\\system32\\drivers\\etc\\hosts' '        192.168.38.102    ecorp.local'\"",
       ]
 
     connection {
@@ -27,7 +27,7 @@ resource "aws_instance" "exchange" {
   ami = coalesce(var.exchange_ami, data.aws_ami.exchange_ami.image_id)
 
   tags = merge(var.custom-tags, tomap(
-    {"Name" = "${var.instance_name_prefix}exchange.windomain.local"}
+    {"Name" = "${var.instance_name_prefix}exchange.ecorp.local"}
   ))
 
   subnet_id              = var.subnet_id

@@ -5,7 +5,7 @@ Import-GPO -BackupGpoName $GPOName -Path "c:\vagrant\resources\GPO\wef_configura
 $gpLinks = $null
 $OU = "OU=Servers,dc=windomain,dc=local"
 
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {
@@ -15,7 +15,7 @@ If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 }
 $OU = "ou=Domain Controllers,dc=windomain,dc=local"
 $gpLinks = $null
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {
@@ -25,7 +25,7 @@ If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 }
 $OU = "ou=Workstations,dc=windomain,dc=local"
 $gpLinks = $null
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {
@@ -40,7 +40,7 @@ $GPOName = 'Custom Event Channel Permissions'
 Import-GPO -BackupGpoName $GPOName -Path "c:\vagrant\resources\GPO\wef_configuration" -TargetName $GPOName -CreateIfNeeded
 $gpLinks = $null
 $OU = "OU=Servers,dc=windomain,dc=local"
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {
@@ -51,7 +51,7 @@ else
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
 $OU = "ou=Domain Controllers,dc=windomain,dc=local"
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {
@@ -62,7 +62,7 @@ else
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
 $OU = "ou=Workstations,dc=windomain,dc=local"
-$gPLinks = Get-ADOrganizationalUnit -Server "dc.windomain.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
+$gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 {

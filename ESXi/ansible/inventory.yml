@@ -2,7 +2,7 @@
 
 logger:
   hosts:
-    192.168.2.120:
+    logger.ecorp.local:
       ansible_user: vagrant
       ansible_password: vagrant
       ansible_port: 22
@@ -11,19 +11,19 @@ logger:
 
 dc:
   hosts:
-    192.168.2.110:
+    dc.ecorp.local:
 
 wef:
   hosts:
-    192.168.2.111:
+    wef.ecorp.local:
 
 database:
   hosts:
-    192.168.2.121:  
+    database.ecorp.local:  
 
 web:
   hosts:
-    192.168.2.119:
+    web.ecorp.public:
       ansible_user: vagrant
       ansible_password: vagrant
       ansible_port: 22
@@ -32,8 +32,18 @@ web:
 
 win10:
   hosts:
-    192.168.2.109:
+    win10.ecorp.local:
+    win102.ecorp.local:
 
 secret:
   hosts:
-    192.168.2.122:
+    secret.ecorp.local:
+
+ctf:
+  hosts:
+    ctf.ecorp.public:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'    

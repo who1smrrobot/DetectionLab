@@ -22,10 +22,10 @@
     - common
   tags: database
 
-#- hosts: web
-#  roles:
-#    - logger
-#  tags: web  
+- hosts: web
+  roles:
+    - web
+  tags: web  
 
 - hosts: exchange
   roles:

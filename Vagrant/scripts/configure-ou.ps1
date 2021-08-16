@@ -1,7 +1,7 @@
 # Purpose: Sets up the Server and Workstations OUs
 
 # Hardcoding DC hostname in hosts file to sidestep any DNS issues
-Add-Content "c:\windows\system32\drivers\etc\hosts" "        192.168.38.102    dc.windomain.local"
+Add-Content "c:\windows\system32\drivers\etc\hosts" "        192.168.38.102    dc.ecorp.local"
 
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Creating Server and Workstation OUs..."
 # Create the Servers OU if it doesn't exist
@@ -14,7 +14,7 @@ while ($servers_ou_created -ne 1) {
     $servers_ou_created = 1
   }
   catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException] {
-    New-ADOrganizationalUnit -Name "Servers" -Server "dc.windomain.local"
+    New-ADOrganizationalUnit -Name "Servers" -Server "dc.ecorp.local"
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Created Servers OU."
     $servers_ou_created = 1
   }
@@ -37,7 +37,7 @@ Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Creating Workstations OU..."
     $workstations_ou_created = 1
   }
   catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException] {
-    New-ADOrganizationalUnit -Name "Workstations" -Server "dc.windomain.local"
+    New-ADOrganizationalUnit -Name "Workstations" -Server "dc.ecorp.local"
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Created Workstations OU."
     $workstations_ou_created = 1
   }

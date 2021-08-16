@@ -35,7 +35,7 @@ resource "aws_subnet" "default" {
 
 # Adjust VPC DNS settings to not conflict with lab
 resource "aws_vpc_dhcp_options" "default" {
-  domain_name          = "windomain.local"
+  domain_name          = "ecorp.local"
   domain_name_servers  = concat(["192.168.38.102"], var.external_dns_servers)
   netbios_name_servers = ["192.168.38.102"]
   tags = var.custom-tags
@@ -242,7 +242,7 @@ resource "aws_instance" "dc" {
   ami = coalesce(var.dc_ami, data.aws_ami.dc_ami.image_id)
 
   tags = merge(var.custom-tags, tomap(
-    {"Name" = "${var.instance_name_prefix}dc.windomain.local"}
+    {"Name" = "${var.instance_name_prefix}dc.ecorp.local"}
   ))
 
   subnet_id              = aws_subnet.default.id
@@ -288,7 +288,7 @@ resource "aws_instance" "wef" {
   ami = coalesce(var.wef_ami, data.aws_ami.wef_ami.image_id)
 
   tags = merge(var.custom-tags, tomap(
-    {"Name" = "${var.instance_name_prefix}wef.windomain.local"}
+    {"Name" = "${var.instance_name_prefix}wef.ecorp.local"}
   ))
 
   subnet_id              = aws_subnet.default.id
@@ -334,7 +334,7 @@ resource "aws_instance" "win10" {
   ami = coalesce(var.win10_ami, data.aws_ami.win10_ami.image_id)
 
   tags = merge(var.custom-tags, tomap(
-    {"Name" = "${var.instance_name_prefix}win10.windomain.local"}
+    {"Name" = "${var.instance_name_prefix}win10.ecorp.local"}
   ))
 
   subnet_id              = aws_subnet.default.id

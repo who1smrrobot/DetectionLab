@@ -1,10 +1,10 @@
-# Purpose: Creates the "windomain.local" domain
+# Purpose: Creates the "ecorp.local" domain
 # Source: https://github.com/StefanScherer/adfs2
 param ([String] $ip)
 
 $subnet = $ip -replace "\.\d+$", ""
 
-$domain= "windomain.local"
+$domain= "ecorp.local"
 
 if ((gwmi win32_computersystem).partofdomain -eq $false) {
 

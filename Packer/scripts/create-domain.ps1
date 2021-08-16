@@ -24,7 +24,7 @@ if ((gwmi win32_computersystem).partofdomain -eq $false) {
     -CreateDnsDelegation:$false `
     -DatabasePath "C:\Windows\NTDS" `
     -DomainMode "Win2012" `
-    -DomainName "windomain.local" `
+    -DomainName "ecorp.local" `
     -DomainNetbiosName "WINDOMAIN" `
     -ForestMode "Win2012" `
     -InstallDns:$true `

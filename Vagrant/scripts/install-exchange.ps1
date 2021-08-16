@@ -11,7 +11,7 @@
 $exchangeFolder = "C:\exchange2016"
 $exchangeISOPath = "C:\exchange2016\ExchangeServer2016-x64-cu12.iso"
 $exchangeDownloadUrl = "https://download.microsoft.com/download/2/5/8/258D30CF-CA4C-433A-A618-FB7E6BCC4EEE/ExchangeServer2016-x64-cu12.iso"
-$username = 'windomain.local\administrator'
+$username = 'ecorp.local\administrator'
 $password = 'vagrant'
 $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
