@@ -18,6 +18,7 @@
 
 - hosts: database
   roles:
+    - database
     - common
   tags: database
 
@@ -40,5 +41,6 @@
 
 - hosts: secret
   roles:
+    - secret
     - common
   tags: secret
