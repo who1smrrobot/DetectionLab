@@ -2,7 +2,7 @@
 
 logger:
   hosts:
-    192.168.2.117:
+    192.168.2.120:
       ansible_user: vagrant
       ansible_password: vagrant
       ansible_port: 22
@@ -17,6 +17,23 @@ wef:
   hosts:
     192.168.2.111:
 
+database:
+  hosts:
+    192.168.2.121:  
+
+web:
+  hosts:
+    192.168.2.119:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'    
+
 win10:
   hosts:
     192.168.2.109:
+
+secret:
+  hosts:
+    192.168.2.122:
