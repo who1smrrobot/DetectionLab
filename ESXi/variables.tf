@@ -27,7 +27,7 @@ variable "vm_network" {
   default = "VM Network"
 }
 
-variable "hostonly_network" {
+variable "internal_network" {
   default = "HostOnly Network"
 }
 
