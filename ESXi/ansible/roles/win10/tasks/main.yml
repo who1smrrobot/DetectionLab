@@ -1,11 +1,11 @@
 ---
 
 - name: What is my inventory_hostname
-  debug: var={{inventory_hostname}}
+  debug: msg={{hostname}}
 
 - name: Hostname -> WIN10
   win_hostname:
-    name: "{{ inventory_hostname }}"
+    name: "{{ hostname }}"
   register: res
 
 - name: Reboot
@@ -13,12 +13,13 @@
   when: res.reboot_required
 
 - name: Set HostOnly DNS Address
-  win_shell: "$adapter = (get-netadapter | where {$_.MacAddress -eq '00-50-56-A2-B1-C4'}).Name; Set-DnsClientServerAddress -InterfaceAlias $adapter -ServerAddresses 192.168.38.102,8.8.8.8"
+  win_shell: "$adapter = (get-netadapter)[0].Name; Set-DnsClientServerAddress -InterfaceAlias $adapter -ServerAddresses 192.168.38.102,8.8.8.8"
 
 - name: Install git
   win_chocolatey:
     name: git
     state: present
+    timeout: 5400
 
 - name: Check if existing DetectionLab directory
   win_stat:
@@ -41,7 +42,7 @@
 #  when: not dir.stat.exists
 
 - name: Copy scripts to c:\vagrant
-  win_shell: Copy-Item -Recurse c:\DetectionLab\Vagrant c:\vagrant
+  win_shell: Copy-Item -Force -Recurse c:\DetectionLab\Vagrant c:\vagrant
 
 - name: Making Windows10 Great Again
   win_shell:  .\\MakeWindows10GreatAgain.ps1

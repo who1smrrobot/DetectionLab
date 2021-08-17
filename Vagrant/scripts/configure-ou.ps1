@@ -9,7 +9,7 @@ $servers_ou_created = 0
 while ($servers_ou_created -ne 1) {
   Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Creating Server OU..."
   try {
-    Get-ADOrganizationalUnit -Identity 'OU=Servers,DC=windomain,DC=local' | Out-Null
+    Get-ADOrganizationalUnit -Identity 'OU=Servers,DC=ecorp,DC=local' | Out-Null
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Servers OU already exists. Moving On."
     $servers_ou_created = 1
   }
@@ -32,7 +32,7 @@ $workstations_ou_created = 0
 while ($workstations_ou_created -ne 1) {
 Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Creating Workstations OU..."
   try {
-    Get-ADOrganizationalUnit -Identity 'OU=Workstations,DC=windomain,DC=local' | Out-Null
+    Get-ADOrganizationalUnit -Identity 'OU=Workstations,DC=ecorp,DC=local' | Out-Null
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Workstations OU already exists. Moving On."
     $workstations_ou_created = 1
   }

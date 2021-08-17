@@ -37,7 +37,7 @@ if ((gwmi win32_computersystem).partofdomain -eq $false) {
     -DatabasePath "C:\Windows\NTDS" `
     -DomainMode "7" `
     -DomainName $domain `
-    -DomainNetbiosName "WINDOMAIN" `
+    -DomainNetbiosName "ECORP" `
     -ForestMode "7" `
     -InstallDns:$true `
     -LogPath "C:\Windows\NTDS" `

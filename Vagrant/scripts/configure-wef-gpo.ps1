@@ -3,7 +3,7 @@ Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Importing the GPO to specify the WEF 
 $GPOName = 'Windows Event Forwarding Server'
 Import-GPO -BackupGpoName $GPOName -Path "c:\vagrant\resources\GPO\wef_configuration" -TargetName $GPOName -CreateIfNeeded
 $gpLinks = $null
-$OU = "OU=Servers,dc=windomain,dc=local"
+$OU = "OU=Servers,dc=ecorp,dc=local"
 
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
@@ -13,7 +13,7 @@ If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 } else {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
-$OU = "ou=Domain Controllers,dc=windomain,dc=local"
+$OU = "ou=Domain Controllers,dc=ecorp,dc=local"
 $gpLinks = $null
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
@@ -23,7 +23,7 @@ If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
 } else {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
-$OU = "ou=Workstations,dc=windomain,dc=local"
+$OU = "ou=Workstations,dc=ecorp,dc=local"
 $gpLinks = $null
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
@@ -39,7 +39,7 @@ Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) Importing the GPO to modify ACLs on C
 $GPOName = 'Custom Event Channel Permissions'
 Import-GPO -BackupGpoName $GPOName -Path "c:\vagrant\resources\GPO\wef_configuration" -TargetName $GPOName -CreateIfNeeded
 $gpLinks = $null
-$OU = "OU=Servers,dc=windomain,dc=local"
+$OU = "OU=Servers,dc=ecorp,dc=local"
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
@@ -50,7 +50,7 @@ else
 {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
-$OU = "ou=Domain Controllers,dc=windomain,dc=local"
+$OU = "ou=Domain Controllers,dc=ecorp,dc=local"
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)
@@ -61,7 +61,7 @@ else
 {
     Write-Host "$('[{0:HH:mm}]' -f (Get-Date)) GpLink $GPOName already linked on $OU. Moving On."
 }
-$OU = "ou=Workstations,dc=windomain,dc=local"
+$OU = "ou=Workstations,dc=ecorp,dc=local"
 $gPLinks = Get-ADOrganizationalUnit -Server "dc.ecorp.local" -Identity $OU -Properties name,distinguishedName, gPLink, gPOptions
 $GPO = Get-GPO -Name $GPOName
 If ($gPLinks.LinkedGroupPolicyObjects -notcontains $gpo.path)

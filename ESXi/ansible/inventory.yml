@@ -33,7 +33,9 @@ web:
 win10:
   hosts:
     win10.ecorp.local:
+      hostname: win10
     win102.ecorp.local:
+      hostname: win102
 
 secret:
   hosts:

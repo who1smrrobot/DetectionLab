@@ -29,10 +29,14 @@
   when: dir.stat.exists == false
 
 - name: Copy DetectionLab folder to target machine
-  win_copy: src=../../../DetectionLab/ dest=C:\DetectionLab\
+  win_copy: 
+    src=../../../DetectionLab/ 
+    dest=C:\DetectionLab\
+  when: dir.stat.exists == false
 
 - name: Copy scripts to c:\vagrant
   win_shell: Copy-Item -Recurse c:\DetectionLab\Vagrant c:\vagrant
+  when: dir.stat.exists == false
 
 - name: Create the Domain
   win_shell: .\\provision.ps1
