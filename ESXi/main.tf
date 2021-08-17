@@ -29,7 +29,7 @@ resource "esxi_guest" "logger" {
 
     provisioner "remote-exec" {
     inline = [
-      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up",
+      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up'"
     ]
 
     connection {
@@ -139,7 +139,7 @@ resource "esxi_guest" "web" {
 
     provisioner "remote-exec" {
     inline = [
-      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up"
+      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up'"
     ]
 
     connection {
@@ -243,7 +243,7 @@ resource "esxi_guest" "ctf" {
 
     provisioner "remote-exec" {
     inline = [
-      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up"
+      "sudo ifconfig eth0 up && echo 'eth0 up' || echo 'unable to bring eth0 interface up'"
     ]
 
     connection {

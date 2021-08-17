@@ -5,7 +5,7 @@
 
 - name: Hostname -> WIN10
   win_hostname:
-    name: {{ inventory_hostname }}
+    name: "{{ inventory_hostname }}"
   register: res
 
 - name: Reboot

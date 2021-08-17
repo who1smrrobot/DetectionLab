@@ -37,3 +37,23 @@ output "win102_interfaces" {
 output "win102_ips" {
   value = esxi_guest.win10-2.ip_address
 }
+
+
+output "web_interfaces" {
+  value = esxi_guest.web.network_interfaces
+}
+
+output "web_ips" {
+  value = esxi_guest.web.ip_address
+}
+
+
+output "ctf_interfaces" {
+  value = esxi_guest.ctf.network_interfaces
+}
+
+output "ctf_ips" {
+  value = esxi_guest.ctf.ip_address
+}
+
+
