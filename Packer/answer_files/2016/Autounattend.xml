@@ -36,7 +36,7 @@
                         </ModifyPartition>
                         <ModifyPartition wcm:action="add">
                             <Format>NTFS</Format>
-                            <Label>Windows 2016</Label>
+                            <Label>Windows 2019</Label>
                             <Letter>C</Letter>
                             <Order>2</Order>
                             <PartitionID>2</PartitionID>
@@ -51,7 +51,7 @@
                     <InstallFrom>
                         <MetaData wcm:action="add">
                             <Key>/IMAGE/NAME</Key>
-                            <Value>Windows Server 2016 SERVERSTANDARD</Value>
+                            <Value>Windows Server 2019 SERVERSTANDARD</Value>
                         </MetaData>
                     </InstallFrom>
                     <InstallTo>
@@ -79,7 +79,7 @@
             <OEMInformation>
                 <HelpCustomized>false</HelpCustomized>
             </OEMInformation>
-            <ComputerName>vagrant-2016</ComputerName>
+            <ComputerName>vagrant-2019</ComputerName>
             <TimeZone>Pacific Standard Time</TimeZone>
             <RegisteredOwner/>
         </component>
