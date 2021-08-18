@@ -44,6 +44,7 @@
 - name: Add APT Repositories
   apt_repository:
     repo: "{{ item }}"
+    codename: "bionic"
   with_items:
     - "ppa:apt-fast/stable"
     - "ppa:rmescandon/yq"
