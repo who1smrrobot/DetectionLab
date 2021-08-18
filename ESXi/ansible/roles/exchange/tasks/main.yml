@@ -22,14 +22,23 @@
 
 - name: Check if existing DetectionLab directory
   win_stat:
-    path: 'c:\DetectionLab'
+    path: 'C:\DetectionLab'
   register: dir
 
-- name: Git clone Detectionlab
-  win_shell: git clone https://github.com/clong/DetectionLab.git
-  args:
-    chdir: 'c:\'
-  when: not dir.stat.exists
+- name: "Ansible Create directory if not exists"
+  ansible.windows.win_file:
+    path: C:\DetectionLab
+    state: directory
+  when: dir.stat.exists == false
+
+- name: Copy DetectionLab folder to target machine
+  win_copy: src=../../../DetectionLab/ dest=C:\DetectionLab\
+
+#- name: Git clone Detectionlab
+#  win_shell: git clone https://github.com/clong/DetectionLab.git
+#  args:
+#    chdir: 'c:\'
+#  when: not dir.stat.exists
 
 - name: Copy scripts to c:\vagrant
   win_shell: Copy-Item -Recurse c:\DetectionLab\Vagrant c:\vagrant
@@ -80,7 +89,7 @@
   vars:
     ansible_become: yes
     ansible_become_method: runas
-    ansible_become_user: WINDOMAIN.local\Administrator
+    ansible_become_user: ecorp.local\Administrator
     ansible_become_password: vagrant
   register: prepare_schema
 
@@ -95,7 +104,7 @@
   vars:
     ansible_become: yes
     ansible_become_method: runas
-    ansible_become_user: WINDOMAIN.local\Administrator
+    ansible_become_user: ecorp.local\Administrator
     ansible_become_password: vagrant
   register: prepare_ad
 
@@ -110,7 +119,7 @@
   vars:
     ansible_become: yes
     ansible_become_method: runas
-    ansible_become_user: WINDOMAIN.local\Administrator
+    ansible_become_user: ecorp.local\Administrator
     ansible_become_password: vagrant
   register: install_exchange
 

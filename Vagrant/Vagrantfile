@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", inline: "Write-Host 'DC Provisioning Complete!'", privileged: false
 
     cfg.vm.provider "vmware_desktop" do |v, override|
-      v.vmx["displayname"] = "dc.windomain.local"
+      v.vmx["displayname"] = "dc.ecorp.local"
       v.memory = 3072
       v.cpus = 2
       v.gui = true
@@ -90,7 +90,7 @@ Vagrant.configure("2") do |config|
 
     cfg.vm.provider "virtualbox" do |vb, override|
       vb.gui = true
-      vb.name = "dc.windomain.local"
+      vb.name = "dc.ecorp.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 3072]
       vb.customize ["modifyvm", :id, "--cpus", 2]
@@ -132,8 +132,9 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", path: "scripts/download_palantir_wef.ps1", privileged: false
     cfg.vm.provision "shell", inline: 'wevtutil el | Select-String -notmatch "Microsoft-Windows-LiveId" | Foreach-Object {wevtutil cl "$_"}', privileged: false
     cfg.vm.provision "shell", path: "scripts/install-wefsubscriptions.ps1", privileged: false
-    cfg.vm.provision "shell", path: "scripts/install-splunkuf.ps1", privileged: false
-    cfg.vm.provision "shell", path: "scripts/install-windows_ta.ps1", privileged: false
+    #cfg.vm.provision "shell", path: "scripts/install-splunkuf.ps1", privileged: false
+    #cfg.vm.provision "shell", path: "scripts/install-windows_ta.ps1", privileged: false
+    cfg.vm.provision "install-winlogbeat", type: "shell", path: "scripts/install-winlogbeat.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-utilities.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-redteam.ps1", privileged: false
     cfg.vm.provision "shell", path: "scripts/install-evtx-attack-samples.ps1", privileged: false
@@ -148,7 +149,7 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", inline: "Write-Host 'WEF Provisioning Complete!'", privileged: false
 
     cfg.vm.provider "vmware_desktop" do |v, override|
-      v.vmx["displayname"] = "wef.windomain.local"
+      v.vmx["displayname"] = "wef.ecorp.local"
       v.memory = 2048
       v.cpus = 2
       v.gui = true
@@ -157,7 +158,7 @@ Vagrant.configure("2") do |config|
 
     cfg.vm.provider "virtualbox" do |vb, override|
       vb.gui = true
-      vb.name = "wef.windomain.local"
+      vb.name = "wef.ecorp.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 2048]
       vb.customize ["modifyvm", :id, "--cpus", 2]
@@ -206,7 +207,7 @@ Vagrant.configure("2") do |config|
     cfg.vm.provision "shell", inline: "Write-Host 'Win10 Provisioning Complete!'", privileged: false
 
     cfg.vm.provider "vmware_desktop" do |v, override|
-      v.vmx["displayname"] = "win10.windomain.local"
+      v.vmx["displayname"] = "win10.ecorp.local"
       v.vmx["gui.fullscreenatpoweron"] = "FALSE"
       v.vmx["gui.viewModeAtPowerOn"] = "windowed"
       v.memory = 2048
@@ -217,7 +218,7 @@ Vagrant.configure("2") do |config|
 
     cfg.vm.provider "virtualbox" do |vb, override|
       vb.gui = true
-      vb.name = "win10.windomain.local"
+      vb.name = "win10.ecorp.local"
       vb.default_nic_type = "82545EM"
       vb.customize ["modifyvm", :id, "--memory", 2048]
       vb.customize ["modifyvm", :id, "--cpus", 1]

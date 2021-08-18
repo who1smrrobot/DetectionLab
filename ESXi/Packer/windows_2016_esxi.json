@@ -1,9 +1,12 @@
 {
   "builders": [
     {
+      "vnc_over_websocket": true,
+      "insecure_connection": true,
       "boot_wait": "2m",
       "communicator": "winrm",
       "disk_size": 61440,
+      "disk_type_id": "thin",
       "floppy_files": [
         "{{user `autounattend`}}",
         "../../Packer/floppy/WindowsPowershell.lnk",

@@ -2,7 +2,7 @@
 
 logger:
   hosts:
-    w.w.w.w:
+    logger.ecorp.local:
       ansible_user: vagrant
       ansible_password: vagrant
       ansible_port: 22
@@ -11,14 +11,41 @@ logger:
 
 dc:
   hosts:
-    x.x.x.x:
+    dc.ecorp.local:
 
 wef:
   hosts:
-    y.y.y.y:
+    wef.ecorp.local:
+
+database:
+  hosts:
+    database.ecorp.local:  
+
+web:
+  hosts:
+    web.ecorp.public:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'    
 
 win10:
   hosts:
-    z.z.z.z:
+    win10.ecorp.local:
+      hostname: win10
+    win102.ecorp.local:
+      hostname: win102
 
+secret:
+  hosts:
+    secret.ecorp.local:
 
+ctf:
+  hosts:
+    ctf.ecorp.public:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'    

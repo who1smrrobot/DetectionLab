@@ -1,0 +1,131 @@
+---
+
+- name: Set hostname to ctf dashboard
+  hostname:
+    name: ctf
+  become: yes
+
+- name: Create a directory if it does not exist
+  file:
+    path: /vagrant
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Copy vagrant resources
+  synchronize:
+    src: ../../Vagrant/resources
+    dest: /vagrant/
+  become: yes
+
+- name: Copy bootstrap file
+  copy:
+    src: ../../Vagrant/logger_bootstrap.sh
+    dest: /home/vagrant
+    owner: vagrant
+    group: vagrant
+    mode: u+x,g+x
+
+- name: Copy netplan file
+  copy:
+    src: ../resources/01-netcfg.yaml
+    dest: /tmp
+    owner: vagrant
+    group: vagrant
+
+- name: Copy the netplan file over as root
+  shell: "mv /tmp/01-netcfg.yaml /etc/netplan/01-netcfg.yaml"
+  become: yes
+
+- name: Apply the new netplan
+  shell: netplan apply
+  become: yes
+
+- name: Add APT Repositories
+  apt_repository:
+    repo: "{{ item }}"
+  with_items:
+    - "ppa:apt-fast/stable"
+    - "ppa:rmescandon/yq"
+    - "ppa:oisf/suricata-stable"
+  become: yes
+
+- name: Install apt-fast
+  become: yes
+  apt:
+    name: apt-fast
+    update_cache: yes
+
+
+- name: remove old docker verions
+  become: yes
+  shell: "sudo apt-get remove docker docker-engine docker.io containerd runc"
+
+- name: install docker dependencies
+  become: yes
+  apt:
+    pkg:
+    - apt-transport-https 
+    - ca-certificates 
+    - curl 
+    - gnupg 
+    - lsb-release  
+    update_cache: yes
+
+- name: add docker gpgp key
+  become: yes
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg"    
+
+- name: add docker repository
+  become: yes
+  shell: "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null"
+
+- name: Install docker
+  become: yes
+  apt:
+    pkg:
+    - docker-ce
+    - docker-ce-cli 
+    - containerd.io
+    update_cache: yes  
+
+- name: test docker installation
+  become: yes
+  shell: "sudo docker run hello-world"    
+  register: dockerhelloworld
+
+- debug: msg="{{ dockerhelloworld }}"
+
+- name: add current user to docker group
+  become: yes
+  shell: "sudo groupadd -f docker && sudo usermod -aG docker $USER"
+
+- name: install docker-compose
+  become: yes
+  shell: "sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose"
+
+- name: download ctfd
+  shell: "curl -o /tmp/ctfd.tar.gz https://codeload.github.com/CTFd/CTFd/tar.gz/refs/tags/3.4.0"  
+
+- name: unzip ctfd tar.gz
+  shell: "mkdir -p /opt/ctfd && tar xzfv /tmp/ctfd.tar.gz -C /opt/ctfd --strip-component=1"  
+  become: yes
+
+- name: copy docker-compose.yml
+  become: yes
+  copy:
+    src: ../../Vagrant/resources/ctfd/docker-compose.yml
+    dest: /opt/ctfd/docker-compose.yml
+    owner: vagrant
+    group: vagrant
+    mode: u+x,g+x
+
+- name: run docker-compose
+  become: yes
+  shell: "cd /opt/ctfd/ && sudo docker-compose up -d"
+  register: dockercompose
+
+- debug: msg="{{ dockercompose }}"
+
+
+
