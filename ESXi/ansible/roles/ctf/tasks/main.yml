@@ -62,7 +62,7 @@
   shell: "sudo apt-get remove docker docker-engine docker.io containerd runc"
 
 - name: install docker dependencies
-  beome: yes
+  become: yes
   apt:
     name: apt-transport-https ca-certificates curl gnupg lsb-release  
     update_cache: yes
