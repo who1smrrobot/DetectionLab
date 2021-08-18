@@ -49,12 +49,11 @@ Modify `DetectionLab/ESXi/Packer/variables.json`
 Modify `DetectionLab\ESXi\terraform.tfvars`
 
 ```yml
-esxi_hostname="server1.s3curity.eu"
+esxi_hostname="192.168.2.127"
 esxi_username="root"
 esxi_password="FIXME"
 esxi_datastore="datastore2"
-vm_network="Lab"
-hostonly_network="CTFLab"
+internal_network="CTFLab_Internal"
 www_network="CTFLab_WWW"
 ```
 
@@ -63,6 +62,8 @@ www_network="CTFLab_WWW"
 
 ### Ansible
 
-Enter IP addresses from ESXi to `inventory.yml`.
+Goto `DetectionLab/ESXI/ansible`
 
-`ansible-playbook -v detectionlab.yml –tags "[logger|dc|wef|win10]"`
+Enter DNS hostnames from ESXi to `inventory.yml` (normally no changes to the default are requuired).
+
+`ansible-playbook -v detectionlab.yml –tags "[logger|dc|wef|win10|wef]"`
