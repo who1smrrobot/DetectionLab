@@ -25,7 +25,7 @@ resource "esxi_guest" "logger" {
   numvcpus           = "4"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "Ubuntu1804"
+  clone_from_vm = "Ubuntu2104"
 
     provisioner "remote-exec" {
     inline = [
@@ -67,7 +67,7 @@ resource "esxi_guest" "dc" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "WindowsServer2016"
+  clone_from_vm = "WindowsServer2019"
   # This is the local network that will be used for 192.168.38.x addressing
   network_interfaces {
     virtual_network = var.internal_network
@@ -89,7 +89,7 @@ resource "esxi_guest" "wef" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "WindowsServer2016"
+  clone_from_vm = "WindowsServer2019"
 
   # This is the local network that will be used for 192.168.38.x addressing
   network_interfaces {
@@ -112,7 +112,7 @@ resource "esxi_guest" "database" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "WindowsServer2016"
+  clone_from_vm = "WindowsServer2019"
 
   # This is the local network that will be used for 192.168.38.x addressing
   network_interfaces {
@@ -135,7 +135,7 @@ resource "esxi_guest" "web" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "Ubuntu1804"
+  clone_from_vm = "Ubuntu2104"
 
     provisioner "remote-exec" {
     inline = [
@@ -216,7 +216,7 @@ resource "esxi_guest" "secret" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "WindowsServer2016"
+  clone_from_vm = "WindowsServer2019"
 
   # This is the local network that will be used for 192.168.38.x addressing
   network_interfaces {
@@ -239,7 +239,7 @@ resource "esxi_guest" "ctf" {
   numvcpus           = "2"
   resource_pool_name = "/"
   power              = "on"
-  clone_from_vm = "Ubuntu1804"
+  clone_from_vm = "Ubuntu2104"
 
     provisioner "remote-exec" {
     inline = [

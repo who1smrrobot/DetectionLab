@@ -1,20 +1,11 @@
 #cloud-config
 autoinstall:
   version: 1
+  early-commands:
+    - systemctl stop ssh
   locale: en_US
   keyboard:
     layout: de
-  network:
-    network:
-      version: 2
-      ethernets:
-        ens33:
-          dhcp4: true
-  storage:
-    layout:
-      name: direct
-    swap:
-      size: 0
   identity:
     hostname: vagrant
     username: vagrant
@@ -24,6 +15,3 @@ autoinstall:
   user-data:
     disable_root: false
     timezone: Europe/Paris
-  late-commands:
-    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
-    - echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant

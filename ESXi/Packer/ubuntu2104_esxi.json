@@ -1,7 +1,7 @@
 {
     "builders": [
         {
-            "vm_name": "Ubuntu1804",
+            "vm_name": "Ubuntu2104",
             "type": "vmware-iso",
             "guest_os_type": "ubuntu-64",
             "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
@@ -13,13 +13,30 @@
             "ssh_handshake_attempts": "20",
             "ssh_pty": true,
             "boot_command": [
-                "<enter><enter><f6><esc><wait> ",
-                "autoinstall ds=nocloud-net;seedfrom=http://{{user `http_server_address`}}:{{ .HTTPPort }}/",
-                "<enter><wait>"
+                " <wait>",
+                " <wait>",
+                " <wait>",
+                " <wait>",
+                " <wait>",
+                "c",
+                "<wait>",
+                "set gfxpayload=keep",
+                "<enter><wait>",
+                "linux /casper/vmlinuz quiet<wait>",
+                " autoinstall<wait>",
+                " ds=nocloud-net<wait>",
+                "\\;s=http://<wait>",
+                "{{user `http_server_address`}}<wait>",
+                ":{{.HTTPPort}}/<wait>",
+                " ---",
+                "<enter><wait>",
+                "initrd /casper/initrd<wait>",
+                "<enter><wait>",
+                "boot<enter><wait>"
             ],
+            "boot_wait": "10s",
             "vnc_over_websocket": true,
             "insecure_connection": true,
-            "boot_wait": "10s",
             "cpus": "{{ user `cpus` }}",
             "disk_size": "{{user `disk_size`}}",
             "disk_type_id": "thin",
