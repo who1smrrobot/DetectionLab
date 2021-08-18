@@ -18,7 +18,7 @@ autoinstall:
   identity:
     hostname: vagrant
     username: vagrant
-    password: $6$rounds=4096$RvU4DrLI$H41oSgfe9EUyLytr/wBxEkzyHxlKo8vaEBNUsNUnLL3vdRqOZuR4FuDBFpgmVX7OjQMFJdEav0NS3QnC4YZHK0
+    password: $6$rounds=4096$Ldr6LQ/Ez$NWadXP7fBSpve/7Y6tSBuRMAY51N0BxevXlH1.VZSBxMHfMRmdXjEoPv863NUjQs5gYEnC2GytglcJ/IIB/4D/
   ssh:
     install-server: yes
   user-data:
