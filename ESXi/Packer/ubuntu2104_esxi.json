@@ -92,7 +92,7 @@
         }
     ],
     "variables": {
-        "box_basename": "ubuntu-18.04",
+        "box_basename": "ubuntu-21.04",
         "http_directory": "{{template_dir}}/http",
         "http_server_address": "",
         "build_timestamp": "{{isotime \"20060102150405\"}}",
@@ -104,15 +104,15 @@
         "esxi_password": "",
         "headless": "false",
         "guest_additions_url": "",
-        "iso_checksum": "sha256:8c5fc24894394035402f66f3824beb7234b757dd2b5531379cb310cedfdf0996",
-        "iso_name": "ubuntu-18.04.5-server-amd64.iso",
+        "iso_checksum": "sha256:6b60e12a344212855c9658acfe8593f37cd066ea7f2d32f0254a8478cd23c2e5",
+        "iso_name": "ubuntu-21.04-live-server-arm64.iso",
         "memory": "4096",
         "mirror": "http://cdimage.ubuntu.com",
-        "mirror_directory": "ubuntu/releases/18.04.4/release",
-        "name": "ubuntu-18.04",
+        "mirror_directory": "ubuntu/releases/21.04/release",
+        "name": "ubuntu-21.04",
         "no_proxy": "{{env `no_proxy`}}",
         "preseed_path": "preseed.cfg",
-        "template": "ubuntu-18.04-amd64",
+        "template": "ubuntu-21.04-amd64",
         "version": "TIMESTAMP"
     }
 }
