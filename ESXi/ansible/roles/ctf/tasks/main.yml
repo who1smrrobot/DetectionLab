@@ -64,12 +64,17 @@
 - name: install docker dependencies
   become: yes
   apt:
-    name: apt-transport-https ca-certificates curl gnupg lsb-release  
+    pkg:
+    - apt-transport-https 
+    - ca-certificates 
+    - curl 
+    - gnupg 
+    - lsb-release  
     update_cache: yes
 
 - name: add docker gpgp key
   become: yes
-  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"    
+  shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg"    
 
 - name: add docker repository
   become: yes
@@ -78,7 +83,10 @@
 - name: Install docker
   become: yes
   apt:
-    name: docker-ce docker-ce-cli containerd.io
+    pkg:
+    - docker-ce
+    - docker-ce-cli 
+    - containerd.io
     update_cache: yes  
 
 - name: test docker installation
@@ -86,21 +94,21 @@
   shell: "sudo docker run hello-world"    
   register: dockerhelloworld
 
-- debug: msg="{{ dockerhelloworld }}""
+- debug: msg="{{ dockerhelloworld }}"
 
 - name: add current user to docker group
   become: yes
-  shell: "sudo groupadd docker && sudo usermod -aG docker $USER"
+  shell: "sudo groupadd -f docker && sudo usermod -aG docker $USER"
 
 - name: install docker-compose
   become: yes
-  shell: "sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+  shell: "sudo curl -L \"https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose &&  chmod +x /usr/local/bin/docker-compose"
 
 - name: download ctfd
-  shell: "curl -o /tmp/ctfd.tar.gz https://github.com/CTFd/CTFd/archive/refs/tags/3.4.0.tar.gz"  
+  shell: "curl -o /tmp/ctfd.tar.gz https://codeload.github.com/CTFd/CTFd/tar.gz/refs/tags/3.4.0"  
 
 - name: unzip ctfd tar.gz
-  shell: "tar xzfv /tmp/ctfd.tar.gz -C /opt/ctfd"  
+  shell: "mkdir -p /opt/ctfd && tar xzfv /tmp/ctfd.tar.gz -C /opt/ctfd --strip-component=1"  
   become: yes
 
 - name: copy docker-compose.yml
@@ -114,7 +122,7 @@
 
 - name: run docker-compose
   become: yes
-  shell: "cd /opt/ctfd/ && sudo docker-compose-up"
+  shell: "cd /opt/ctfd/ && sudo docker-compose up -d"
   register: dockercompose
 
 - debug: msg="{{ dockercompose }}"
