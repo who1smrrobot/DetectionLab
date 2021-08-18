@@ -40,9 +40,9 @@ Modify `DetectionLab/ESXi/Packer/variables.json`
 }
 ```
 
-`$env:PACKER_CACHE_DIR="../../Packer/packer_cache"; packer build -var-file variables.json windows_10_esxi.json`
-`$env:PACKER_CACHE_DIR="../../Packer/packer_cache";  packer build -var-file variables.json windows_2016_esxi.json`
-`$env:PACKER_CACHE_DIR="../../Packer/packer_cache";  packer build -var-file variables.json ubuntu1804_esxi.json`
+`$env:PACKER_CACHE_DIR="../../Packer/packer_cache"; packer build --force -var-file variables.json windows_10_esxi.json`
+`$env:PACKER_CACHE_DIR="../../Packer/packer_cache"; packer build --force -var-file variables.json windows_2019_esxi.json`
+`$env:PACKER_CACHE_DIR="../../Packer/packer_cache"; packer build --force -var-file variables.json ubuntu2104_esxi.json`
 
 ### Terraform
 
