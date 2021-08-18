@@ -3,8 +3,7 @@ autoinstall:
   version: 1
   locale: en_US
   keyboard:
-    layout: en
-    variant: us
+    layout: de
   network:
     network:
       version: 2
@@ -13,7 +12,9 @@ autoinstall:
           dhcp4: true
   storage:
     layout:
-      name: lvm
+      name: direct
+    swap:
+      size: 0
   identity:
     hostname: vagrant
     username: vagrant
@@ -22,6 +23,7 @@ autoinstall:
     install-server: yes
   user-data:
     disable_root: false
+    timezone: Europe/Paris
   late-commands:
     - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
-    - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
+    - echo 'vagrant ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/vagrant
