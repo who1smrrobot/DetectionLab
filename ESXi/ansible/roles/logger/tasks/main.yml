@@ -68,7 +68,7 @@
     - git
     - mysql-server
     - redis-server
-    - python-pip
+    - python3-pip
     - unzip
     - htop
     - yq 
@@ -98,7 +98,7 @@
     executable: /bin/bash
   become: yes
   shell: |
-    for package in jq whois build-essential git unzip yq mysql-server redis-server python-pip; do
+    for package in jq whois build-essential git unzip yq mysql-server redis-server python3-pip; do
       echo "[$(date +%H:%M:%S)]: [TEST] Validating that $package is correctly installed..."
       # Loop through each package using dpkg
       if ! dpkg -S $package >/dev/null; then
