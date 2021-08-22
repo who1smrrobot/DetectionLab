@@ -44,6 +44,7 @@
 - name: Add APT Repositories
   apt_repository:
     repo: "{{ item }}"
+    codename: "bionic"
   with_items:
     - "ppa:apt-fast/stable"
     - "ppa:rmescandon/yq"
@@ -53,7 +54,9 @@
 - name: Install apt-fast
   become: yes
   apt:
-    name: apt-fast
+    pkg:
+    - apt-fast
+    - zip
     update_cache: yes
 
 - name: install docker dependencies
@@ -516,15 +519,15 @@
   shell: |
     echo "[$(date +%H:%M:%S)]: Installing Zeek..."
     if ! grep 'zeek' /etc/apt/sources.list.d/security:zeek.list; then
-      sh -c "echo 'deb http://download.opensuse.org/repositories/security:/zeek/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/security:zeek.list"
+      sh -c "echo 'deb http://download.opensuse.org/repositories/security:/zeek/xUbuntu_21.04/ /' > /etc/apt/sources.list.d/security:zeek.list"
     fi
-    wget -nv https://download.opensuse.org/repositories/security:zeek/xUbuntu_18.04/Release.key -O /tmp/Release.key
+    wget -nv https://download.opensuse.org/repositories/security:zeek/xUbuntu_21.04/Release.key -O /tmp/Release.key
     apt-key add - </tmp/Release.key &>/dev/null
 
 - name: Install Zeek Packages
   become: yes
   apt:
-    name: ['zeek', 'crudini', 'python-pip']
+    name: ['zeek', 'crudini', 'python3-pip']
     update_cache: yes
 
 - name: Install Zeek Continued

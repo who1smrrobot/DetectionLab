@@ -35,7 +35,7 @@
   when: dir.stat.exists == false
 
 - name: Copy scripts to c:\vagrant
-  win_shell: Copy-Item -Recurse c:\DetectionLab\Vagrant c:\vagrant
+  win_shell: Copy-Item -Force -Recurse c:\DetectionLab\Vagrant c:\vagrant
   when: dir.stat.exists == false
 
 - name: Create the Domain
