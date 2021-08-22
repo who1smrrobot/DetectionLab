@@ -56,13 +56,20 @@
     name: apt-fast
     update_cache: yes
 
-- name: Install tools via apt-fast
-  args: 
-    executable: /bin/bash
+- name: install docker dependencies
   become: yes
-  shell: |
-      echo "[$(date +%H:%M:%S)]: Running apt-fast install..."
-      apt-fast -qq install -y jq whois build-essential git mysql-server redis-server python-pip unzip htop yq
+  apt:
+    pkg:
+    - whois
+    - build-essential
+    - git
+    - mysql-server
+    - redis-server
+    - python-pip
+    - unzip
+    - htop
+    - yq 
+    update_cache: yes    
   register: apt_install_prerequisites
   failed_when: "'error' in apt_install_prerequisites.stderr"
 
